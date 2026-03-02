@@ -13,6 +13,7 @@ app.get('/', async (req, res) => {
   document.querySelector('#respuesta').innerHTML = text.status === 1 ? `El factorial de ${text.input} es ${text.result}` : `${text.input} ${text.result}!`;
 });
 
+
 //Iniciamos el servidor en el puerto 8080
 app.listen(8080, () => {
   console.log('Servidor escuchando en el puerto 8080');
