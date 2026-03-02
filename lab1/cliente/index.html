@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Factorial</title>
+</head>
+<body>
+
+<form id="numeroForm">
+    <div>
+        <label for="numero">Introduce el número para el factorial</label>
+        <input type="number" name="numero" id="numero" value="0" />
+    </div>
+
+    <div>
+        <button type="submit" id="enviar">Enviar</button>
+    </div>
+
+    <div>
+        <div id="respuesta"></div>
+    </div>
+</form>
+
+<script>
+document.getElementById("numeroForm").onsubmit = async (e) => {
+    e.preventDefault();
+
+    const numero = document.getElementById("numero").value;
+
+    const response = await fetch("http://localhost:3000/factorial2", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ numero })
+    });
+
+    const text = await response.text();
+    document.getElementById("respuesta").innerHTML = text;
+};
+</script>
+
+</body>
+</html>
