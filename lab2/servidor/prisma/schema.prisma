@@ -11,6 +11,59 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
+model movie {
+  id     Int    @id @default(autoincrement())
+  name   String @db.VarChar(50)
+  actors String @db.VarChar(200)
+  // Relación inversa: Una película tiene muchos horarios
+  show_timings show_timing[]
+}
+
+model points {
+  id     Int @id @default(autoincrement())
+  points Int
+}
+
+model sales {
+  id     Int   @id @default(autoincrement())
+  amount Float
+  // Asumiendo que cada venta pertenece a un horario según el diagrama
+  show_timing_id Int
+  show_timing    show_timing @relation(fields: [show_timing_id], references: [id])
+}
+
+model show_timing {
+  id         Int      @id @default(autoincrement())
+  day        DateTime @db.Date
+  // Relación con Theater
+  theater_id Int
+  theater    theater @relation(fields: [theater_id], references: [id])
+
+  // Relación con Movie
+  movie_id   Int
+  movie      movie   @relation(fields: [movie_id], references: [id])
+
+  // Relación con Timeslot (Timing_id)
+  timing_id  Int
+  timeslot   timeslot @relation(fields: [timing_id], references: [id])
+
+  // Relación con Sales (según la línea del diagrama)
+  sales      sales[]
+}
+
+model theater {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(50)
+  capacity Int
+  show_timings show_timing[]
+}
+
+model timeslot {
+  id         Int    @id @default(autoincrement())
+  start_time String @db.VarChar(5)
+  end_time   String @db.VarChar(5)
+  // Relación inversa: Un bloque horario se usa en muchos shows
+  show_timings show_timing[]
+}
