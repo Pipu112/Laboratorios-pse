@@ -2,7 +2,7 @@ import express from 'express';
 import {factorial} from './functions';
 import cors from 'cors';
   
-import { prisma } from '@prisma/client';
+import { prisma } from '@prisma/';
 
 const app = express();
 const PORT = 3000;
